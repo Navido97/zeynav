@@ -1,0 +1,158 @@
+/* =========================
+   JA PAGE — ja.css
+   ========================= */
+
+.backBtn {
+  position: fixed;
+  top: calc(16px + env(safe-area-inset-top, 0px));
+  left: 16px;
+  z-index: 50;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+  text-decoration: none;
+
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(17, 24, 39, .13);
+  border-radius: 999px;
+  padding: 8px 14px 8px 10px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 14px rgba(17, 24, 39, .09);
+
+  transition: transform .12s ease, box-shadow .15s ease;
+}
+
+.backBtn:active {
+  transform: scale(.96);
+}
+
+
+/* =========================
+   LAYOUT WRAP
+   ========================= */
+.jaWrap {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: calc(72px + env(safe-area-inset-top, 0px)) 16px
+           calc(48px + env(safe-area-inset-bottom, 0px));
+}
+
+
+/* =========================
+   HERO
+   ========================= */
+.hero {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.beeImgWrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.beeImg {
+  width: min(220px, 72vw);
+  height: auto;
+  border-radius: 20px;
+  border: 1px solid rgba(17, 24, 39, .10);
+  box-shadow: 0 20px 50px rgba(17, 24, 39, .13);
+  object-fit: cover;
+}
+
+.heroTitle {
+  margin: 0 0 10px;
+  font-size: clamp(22px, 6vw, 32px);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #111827;
+}
+
+.heroSub {
+  margin: 0;
+  font-size: 15px;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+
+/* =========================
+   GALLERY
+   ========================= */
+.gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.card {
+  border-radius: 18px;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid rgba(17, 24, 39, .09);
+  box-shadow: 0 12px 30px rgba(17, 24, 39, .09);
+
+  /* Fade-in on scroll */
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .45s ease, transform .45s ease;
+}
+
+.card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card img,
+.card video {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  max-height: 420px;
+  background: #f3f4f6;
+}
+
+/* Videos slightly taller allowed */
+.card video {
+  max-height: 500px;
+}
+
+.caption {
+  padding: 14px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  line-height: 1.45;
+  border-top: 1px solid rgba(17, 24, 39, .06);
+}
+
+
+/* =========================
+   FOOTER
+   ========================= */
+.footer {
+  text-align: center;
+  margin-top: 52px;
+  font-size: 15px;
+  color: #9ca3af;
+  letter-spacing: 0.01em;
+}
+
+
+/* =========================
+   MOBILE
+   ========================= */
+@media (max-width: 420px) {
+  .heroTitle { font-size: 20px; }
+  .card img, .card video { max-height: 320px; }
+}

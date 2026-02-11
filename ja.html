@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <link rel="icon" type="image/jpeg" href="img/bee.jpg">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Für immer meine Biene 🐝💘</title>
+
+  <link rel="preload" as="image" href="img/pink_heart.png">
+  <link rel="preload" as="image" href="img/bee.jpg">
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/ja.css" />
+</head>
+
+<body>
+
+  <!-- Animated hearts background -->
+  <div class="hearts" aria-hidden="true" id="heartsBg"></div>
+
+  <!-- Back arrow -->
+  <a href="index.html" class="backBtn" aria-label="Zurück">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"/>
+    </svg>
+    Zurück
+  </a>
+
+  <!-- MAIN CONTENT -->
+  <main class="jaWrap" id="content">
+
+    <!-- HERO: Bee -->
+    <section class="hero">
+      <div class="beeImgWrap">
+        <img src="img/bee.jpg" alt="Unsere Biene" class="beeImg" />
+      </div>
+      <h1 class="heroTitle">Du bist für immer meine Biene 🐝</h1>
+      <p class="heroSub">Weil du süß bist, einzigartig bist, und mein Herz zum Summen bringst 💛</p>
+    </section>
+
+    <!-- GALLERY -->
+    <!-- =====================================================
+         ✏️  ANPASSEN: Füge hier deine Bilder/Videos hinzu.
+         Kopiere einfach einen <div class="card"> Block und
+         ändere src= und die Caption.
+
+         Für Bilder:  <img src="img/DEINBILD.jpg" ...>
+         Für Videos:  <video src="img/DEINVIDEO.mp4" ...>
+         ===================================================== -->
+    <section class="gallery">
+
+      <div class="card">
+        <img src="img/city.jpg" alt="Foto 1" loading="lazy" />
+        <div class="caption">📍 Hier beginnt unsere Geschichte</div>
+      </div>
+
+      <div class="card">
+        <img src="img/lachen.png" alt="Foto 2" loading="lazy" />
+        <div class="caption">😂 Dieses Lachen — ich könnte es ewig hören</div>
+      </div>
+
+      <div class="card">
+        <img src="img/stadion.png" alt="Foto 3" loading="lazy" />
+        <div class="caption">🏟️ Unser Abend — unvergesslich</div>
+      </div>
+
+      <div class="card">
+        <img src="img/normal.png" alt="Foto 4" loading="lazy" />
+        <div class="caption">🌸 Einfach du — das reicht schon</div>
+      </div>
+
+      <!-- VIDEO BEISPIEL — src anpassen oder löschen wenn kein Video -->
+      <!--
+      <div class="card">
+        <video src="img/DEINVIDEO.mp4"
+               controls
+               playsinline
+               preload="metadata">
+          Dein Browser unterstützt kein Video.
+        </video>
+        <div class="caption">🎥 Erinnerung für immer</div>
+      </div>
+      -->
+
+      <!-- Weitere Karten einfach hier drunter einfügen -->
+
+    </section>
+
+    <div class="footer">
+      Alles Liebe, für immer 🐝💘
+    </div>
+
+  </main>
+
+  <script src="js/main.js"></script>
+  <script src="js/ja.js"></script>
+</body>
+</html>
