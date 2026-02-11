@@ -1,0 +1,393 @@
+:root{
+  --bg: #ffffff;
+  --text: #111827;
+  --muted: #6b7280;
+
+  --red: #ef4444;
+  --red2:#ff4d6d;
+
+  --safeTop: env(safe-area-inset-top, 0px);
+  --safeBot: env(safe-area-inset-bottom, 0px);
+
+  --max: 640px;
+}
+
+*{ box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+html,body{ height:100%; }
+
+body{
+  margin:0;
+  font-family: ui-sans-serif, -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial;
+  color: var(--text);
+  background: var(--bg);
+  overflow-x:hidden;
+}
+
+/* =========================
+   LAYOUT (no card)
+   ========================= */
+.wrap{
+  min-height: 100svh;
+  padding: calc(22px + var(--safeTop)) 16px calc(22px + var(--safeBot));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position: relative;
+  z-index: 2; /* above hearts */
+}
+
+.content{
+  width: min(var(--max), 100%);
+  text-align:center;
+}
+/* =========================
+   INTRO: hide content until curtain ends
+   ========================= */
+body.intro #content{
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+}
+
+body.ready #content{
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  transition: opacity .55s ease, transform .55s ease;
+}
+
+
+h1{
+  margin: 14px 0 10px;
+  font-size: clamp(24px, 6.2vw, 36px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+p{
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.tinyNote{
+  margin-top: 12px;
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+/* =========================
+   HERO GIF
+   ========================= */
+.heroMedia{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.heroGif{
+  width: min(240px, 78vw);
+  height: auto;
+  border-radius: 18px;
+  border: 1px solid rgba(17,24,39,.10);
+  box-shadow: 0 18px 45px rgba(17,24,39,.12);
+  background: rgba(255,255,255,.8);
+}
+
+/* =========================
+   BUTTONS
+   ========================= */
+.btnRow{
+  position: relative;
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap: wrap;
+  padding-top: 8px;
+  min-height: 56px; /* prevents layout jump when 'no' becomes absolute */
+}
+
+.btn{
+  appearance:none;
+  border:none;
+  border-radius: 14px;
+  padding: 14px 16px;
+  font-size: 16px;
+  font-weight: 800;
+  min-width: 120px;
+
+  color: #111827;
+  background: #ffffff;
+  border: 1px solid rgba(17,24,39,.14);
+  box-shadow: 0 12px 26px rgba(17,24,39,.10);
+
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  transition: transform .12s ease, box-shadow .2s ease, border-color .2s ease;
+  touch-action: manipulation;
+}
+
+.btn:active{ transform: scale(.98); }
+
+.btn.yes{
+  color: white;
+  border-color: rgba(239,68,68,.25);
+  background: linear-gradient(135deg, var(--red), var(--red2));
+  box-shadow: 0 16px 34px rgba(239,68,68,.22);
+}
+
+.btn.maybe{
+  background: #fff7f7;
+  border-color: rgba(239,68,68,.20);
+}
+
+.btn.no{
+  background: #ffffff;
+}
+
+/* disagree shake */
+@keyframes disagree {
+  0%,100%{ transform: translateX(0) rotate(0deg); }
+  15%{ transform: translateX(-3px) rotate(-4deg); }
+  35%{ transform: translateX(4px) rotate(4deg); }
+  55%{ transform: translateX(-4px) rotate(-3deg); }
+  75%{ transform: translateX(3px) rotate(3deg); }
+}
+.btn.no.shake{ animation: disagree .35s ease; }
+
+/* =========================
+   FULLSCREEN MAYBE OVERLAY
+   ========================= */
+#maybeOverlay{
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .55s ease;
+}
+
+#maybeOverlay.active{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.overlayContent{
+  text-align:center;
+  max-width: 90vw;
+  animation: softScale .55s ease;
+}
+
+.overlayContent img{
+  width: min(420px, 86vw);
+  border-radius: 18px;
+  border: 1px solid rgba(17,24,39,.10);
+  box-shadow: 0 24px 60px rgba(17,24,39,.14);
+  background: white;
+}
+
+.overlayCaption{
+  margin-top: 16px;
+  font-size: clamp(18px, 5vw, 24px);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: #111827;
+}
+
+@keyframes softScale{
+  from{ transform: scale(.93); opacity: 0; }
+  to{ transform: scale(1); opacity: 1; }
+}
+
+/* =========================
+   HEARTS BACKGROUND
+   ========================= */
+/* Container behind content */
+.hearts{
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* =========================
+   IMAGE HEART BACKGROUND
+   ========================= */
+
+.hearts{
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.heartImg{
+  position: absolute;
+  width: 26px;
+  height: auto;
+  opacity: 0.32; /* slightly stronger but still subtle */
+  animation: floatHeart linear infinite;
+  will-change: transform;
+}
+
+/* gentle vertical float */
+@keyframes floatHeart{
+  0%   { transform: translateY(0px) rotate(0deg); }
+  50%  { transform: translateY(-25px) rotate(8deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+
+/* Reduce motion accessibility */
+@media (prefers-reduced-motion: reduce){
+  .heart{ animation: none !important; }
+  #curtain{ display:none; }
+}
+
+/* =========================
+   CURTAIN: 4 QUADRANTS GRID
+   ========================= */
+#curtain{
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: transparent;   /* <-- wichtig */
+  overflow: hidden;
+}
+
+/* Grid with 4 images */
+.curtainGrid{
+  position:absolute;
+  inset:0;
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+/* Each quadrant */
+.quad{
+  position: relative;
+  overflow:hidden;
+  background: transparent;   /* <-- wichtig */
+}
+
+/* inner image layer */
+.quad .img{
+  position:absolute;
+  inset:0;
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.04);
+  opacity: 0;
+  transition: opacity .35s ease, transform .6s ease;
+}
+
+/* "played in" state */
+.quad.show .img{
+  opacity: 1;
+  transform: scale(1.02);
+}
+
+/* Slide-out: left column goes left, right column goes right */
+#curtain.opening .q1,
+#curtain.opening .q3{
+  transform: translateX(-110%);
+}
+
+#curtain.opening .q2,
+#curtain.opening .q4{
+  transform: translateX(110%);
+}
+
+.q1,.q2,.q3,.q4{
+  transition: transform .9s cubic-bezier(.2,.8,.2,1);
+  will-change: transform;
+}
+
+/* fade curtain away after slide */
+#curtain.done{
+  pointer-events:none;
+  opacity:0;
+  transition: opacity .35s ease;
+}
+
+/* hint */
+#curtain .hint{
+  position: absolute;
+  bottom: calc(18px + var(--safeBot));
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  color: rgba(17,24,39,.7);
+  background: rgba(255,255,255,.72);
+  border: 1px solid rgba(17,24,39,.10);
+  padding: 8px 12px;
+  border-radius: 999px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+
+/* Mobile tuning */
+@media (max-width: 420px){
+  .btn{ min-width: 110px; padding: 13px 14px; }
+  .heroGif{ width: min(230px, 86vw); }
+}
+
+/* Keep the main row stable */
+.btnRow{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap: wrap;
+  padding-top: 8px;
+}
+
+/* NO ZONE: dedicated playground so it never covers the other buttons */
+.noZone{
+  position: relative;
+  width: min(520px, 100%);
+  height: 90px;            /* space for movement */
+  margin: 18px auto 0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* The NO button moves inside this zone */
+.noZone .btn.no{
+  position: absolute;
+  left: 50%;
+  top: 90%;
+  transform: translate(-50%, -50%);
+}
+
+/* extra "disagree" wobble */
+@keyframes disagree {
+  0%,100%{ transform: translate(-50%, -50%) rotate(0deg); }
+  15%{ transform: translate(calc(-50% - 3px), -50%) rotate(-4deg); }
+  35%{ transform: translate(calc(-50% + 4px), -50%) rotate(4deg); }
+  55%{ transform: translate(calc(-50% - 4px), -50%) rotate(-3deg); }
+  75%{ transform: translate(calc(-50% + 3px), -50%) rotate(3deg); }
+}
+.btn.no.shake{
+  animation: disagree .35s ease;
+}
+
+
+#curtain{
+  will-change: opacity, transform;
+}
