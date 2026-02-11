@@ -88,9 +88,8 @@ function runCurtainQuadrants() {
     return;
   }
 
-  // FIX: S = 1.0 statt 1.8 — deutlich schnellere Gesamtdauer
-  // Vorher: ~4 Sekunden bis reveal. Jetzt: ~2.2 Sekunden.
-  const S = 1.0;
+  const S = 3.0;        // Curtain-Geschwindigkeit (Bilder + Slide-Animation)
+  const REVEAL = 3750;  // ms bis Content erscheint — unabhängig von S anpassen
 
   setTimeout(() => setQuadImage(".q1", curtainImages[0]), 120 * S);
   setTimeout(() => setQuadImage(".q2", curtainImages[1]), 280 * S);
@@ -101,10 +100,9 @@ function runCurtainQuadrants() {
     curtain.classList.add("opening");
   }, 1050 * S);
 
-  // FIX: Kürzere Gesamtzeit — kein unnötiger Extra-Puffer
   setTimeout(() => {
     finishIntro();
-  }, 1800 * S);
+  }, REVEAL);
 }
 
 // FIX: DOMContentLoaded statt load — startet sofort, wartet nicht auf alle
