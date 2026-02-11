@@ -4,6 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Valentinsdate? 💘</title>
+
+  <!-- Preload important visuals -->
   <link rel="preload" as="image" href="img/jiggle_bear.gif">
   <link rel="preload" as="image" href="img/pink_heart.png">
 
@@ -12,20 +14,19 @@
 
 <body class="intro">
 
-  <!-- Animated hearts background -->
+  <!-- Animated hearts background (behind content & curtain) -->
   <div class="hearts" aria-hidden="true" id="heartsBg"></div>
 
-<div id="curtain" aria-hidden="true">
-  <div class="curtainGrid" id="curtainGrid">
-    <div class="quad q1"><div class="img"></div></div>
-    <div class="quad q2"><div class="img"></div></div>
-    <div class="quad q3"><div class="img"></div></div>
-    <div class="quad q4"><div class="img"></div></div>
+  <!-- Curtain -->
+  <div id="curtain" aria-hidden="true">
+    <div class="curtainGrid" id="curtainGrid">
+      <div class="quad q1"><div class="img"></div></div>
+      <div class="quad q2"><div class="img"></div></div>
+      <div class="quad q3"><div class="img"></div></div>
+      <div class="quad q4"><div class="img"></div></div>
+    </div>
+    <div class="hint">✨ gleich geht’s los…</div>
   </div>
-
-  <div class="hint">✨ gleich geht’s los…</div>
-</div>
-
 
   <!-- FULLSCREEN "VIELLEICHT" OVERLAY -->
   <div id="maybeOverlay" aria-hidden="true">
@@ -35,7 +36,7 @@
     </div>
   </div>
 
-  <!-- MAIN CONTENT (no container card) -->
+  <!-- MAIN CONTENT -->
   <main class="wrap" id="content">
     <section class="content">
 
@@ -46,16 +47,14 @@
       <h1>Möchtest du mein Valentines Date sein? 💘</h1>
       <p>Bitte wähle eine Option:</p>
 
-     <div class="btnRow" id="btnRow">
-  <a class="btn yes" href="ja.html">Ja</a>
-  <button class="btn maybe" id="btnMaybe" type="button">Vielleicht</button>
-</div>
+      <div class="btnRow" id="btnRow">
+        <a class="btn yes" href="ja.html">Ja</a>
+        <button class="btn maybe" id="btnMaybe" type="button">Vielleicht</button>
+      </div>
 
-<!-- Separate NO ZONE (below buttons, plenty of space) -->
-<div class="noZone" id="noZone">
-  <button class="btn no" id="btnNo" type="button">Nein</button>
-</div>
-
+      <div class="noZone" id="noZone">
+        <button class="btn no" id="btnNo" type="button">Nein</button>
+      </div>
 
       <div class="tinyNote">PS: „Nein“ ist ein bisschen schüchtern 🙈</div>
 

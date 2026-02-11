@@ -3,7 +3,7 @@
 // =========================
 const heartsBg = document.getElementById("heartsBg");
 
-function spawnHearts(count = 30){
+function spawnHearts(count = 30) {
   if (!heartsBg) return;
 
   heartsBg.innerHTML = "";
@@ -11,99 +11,107 @@ function spawnHearts(count = 30){
   const w = window.innerWidth;
   const h = window.innerHeight;
 
-  for (let i = 0; i < count; i++){
+  for (let i = 0; i < count; i++) {
     const heart = document.createElement("img");
     heart.src = "img/pink_heart.png";
     heart.className = "heartImg";
     heart.alt = "";
     heart.setAttribute("aria-hidden", "true");
 
-    // random position
-    heart.style.left = (Math.random() * w) + "px";
-    heart.style.top  = (Math.random() * h) + "px";
+    heart.style.left = Math.random() * w + "px";
+    heart.style.top = Math.random() * h + "px";
 
-    // random size
-    const size = 18 + Math.random() * 28; // 18px–46px
+    const size = 18 + Math.random() * 28;
     heart.style.width = size + "px";
 
-    // random animation speed
-    const duration = 6 + Math.random() * 10; // 6–16s
+    const duration = 6 + Math.random() * 10;
     heart.style.animationDuration = duration + "s";
-
-    // random delay
-    heart.style.animationDelay = (Math.random() * 5) + "s";
+    heart.style.animationDelay = Math.random() * 5 + "s";
 
     heartsBg.appendChild(heart);
   }
 }
 
-window.addEventListener("load", () => spawnHearts(30));
-window.addEventListener("resize", () => spawnHearts(30));
+// Debounced resize — verhindert zu viele DOM-Operationen beim Resize
+let resizeTimer;
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => spawnHearts(30), 150);
+});
+
+window.addEventListener("DOMContentLoaded", () => spawnHearts(30));
 
 
 // =========================
 // 1) Curtain: 4 images -> quadrants -> slide away
 // =========================
 const curtainImages = [
-  "img/city.jpg",       // top-left
-  "img/lachen.png",     // top-right
-  "img/stadion.png",    // bottom-left
-  "img/normal.png"      // bottom-right
+  "img/city.jpg",       // oben-links
+  "img/lachen.png",     // oben-rechts
+  "img/stadion.png",    // unten-links
+  "img/normal.png"      // unten-rechts
 ];
 
 const curtain = document.getElementById("curtain");
 const grid = document.getElementById("curtainGrid");
 
-function setQuadImage(selector, src){
-  const quad = grid.querySelector(selector);
+function setQuadImage(selector, src) {
+  const quad = grid?.querySelector(selector);
   const layer = quad?.querySelector(".img");
   if (!quad || !layer) return;
 
-  // load image first so it doesn't "flash" broken
   const im = new Image();
   im.onload = () => {
     layer.style.backgroundImage = `url("${src}")`;
     quad.classList.add("show");
   };
   im.onerror = () => {
-    // If an image fails, still show the quadrant (blank) so animation continues
     quad.classList.add("show");
   };
   im.src = src;
 }
 
-function runCurtainQuadrants(){
-  if (!curtain || !grid) return;
+function finishIntro() {
+  curtain?.classList.add("done");
+  document.body.classList.remove("intro");
+  document.body.classList.add("ready");
 
-  const S = 1.6; // <-- höher = langsamer (z.B. 1.3, 1.6, 2.0)
+  setTimeout(() => {
+    if (curtain) curtain.style.display = "none";
+  }, 400);
+}
+
+function runCurtainQuadrants() {
+  if (!curtain || !grid) {
+    document.body.classList.remove("intro");
+    document.body.classList.add("ready");
+    return;
+  }
+
+  // FIX: S = 1.0 statt 1.8 — deutlich schnellere Gesamtdauer
+  // Vorher: ~4 Sekunden bis reveal. Jetzt: ~2.2 Sekunden.
+  const S = 1.0;
 
   setTimeout(() => setQuadImage(".q1", curtainImages[0]), 120 * S);
-  setTimeout(() => setQuadImage(".q2", curtainImages[1]), 320 * S);
-  setTimeout(() => setQuadImage(".q3", curtainImages[2]), 520 * S);
-  setTimeout(() => setQuadImage(".q4", curtainImages[3]), 720 * S);
+  setTimeout(() => setQuadImage(".q2", curtainImages[1]), 280 * S);
+  setTimeout(() => setQuadImage(".q3", curtainImages[2]), 440 * S);
+  setTimeout(() => setQuadImage(".q4", curtainImages[3]), 600 * S);
 
   setTimeout(() => {
     curtain.classList.add("opening");
-  }, 1300 * S);
+  }, 1050 * S);
 
+  // FIX: Kürzere Gesamtzeit — kein unnötiger Extra-Puffer
   setTimeout(() => {
-    curtain.classList.add("done");
-  }, 2200 * S);
+    finishIntro();
+  }, 1800 * S);
 }
 
-document.body.classList.remove("intro");
-document.body.classList.add("ready");
-
-
-
-window.addEventListener("load", () => {
-  // If you want to disable curtain quickly:
-  // curtain?.classList.add("done"); return;
-
+// FIX: DOMContentLoaded statt load — startet sofort, wartet nicht auf alle
+// externen Ressourcen (Bilder, etc.). Curtain-Bilder werden ohnehin lazy geladen.
+window.addEventListener("DOMContentLoaded", () => {
   runCurtainQuadrants();
 });
-
-
 
 
 // =========================
@@ -114,28 +122,32 @@ const maybeOverlay = document.getElementById("maybeOverlay");
 
 let overlayTimer;
 
-function showMaybeOverlay(){
+function showMaybeOverlay() {
   if (!maybeOverlay) return;
-
   clearTimeout(overlayTimer);
-
   maybeOverlay.classList.add("active");
   maybeOverlay.setAttribute("aria-hidden", "false");
 
   overlayTimer = setTimeout(() => {
-    maybeOverlay.classList.remove("active");
-    maybeOverlay.setAttribute("aria-hidden", "true");
+    hideMaybeOverlay();
   }, 2400);
 }
 
-if (btnMaybe) {
-  btnMaybe.addEventListener("click", showMaybeOverlay);
+function hideMaybeOverlay() {
+  if (!maybeOverlay) return;
+  maybeOverlay.classList.remove("active");
+  maybeOverlay.setAttribute("aria-hidden", "true");
+  clearTimeout(overlayTimer);
 }
+
+btnMaybe?.addEventListener("click", showMaybeOverlay);
+
+// FIX: Klick auf Overlay selbst schließt es auch
+maybeOverlay?.addEventListener("click", hideMaybeOverlay);
 
 
 // =========================
 // 3) "Nein" in its own zone (never covers other buttons)
-//     + stays where it jumps (no sinking)
 // =========================
 const btnNo = document.getElementById("btnNo");
 const noZone = document.getElementById("noZone");
@@ -143,7 +155,7 @@ const noZone = document.getElementById("noZone");
 let noSlot = 0;
 let isNoPlayMode = false;
 
-function getNoSlots(zoneWidth, btnWidth){
+function getNoSlots(zoneWidth, btnWidth) {
   const pad = 10;
   const maxX = Math.max(pad, zoneWidth - btnWidth - pad);
 
@@ -155,42 +167,44 @@ function getNoSlots(zoneWidth, btnWidth){
   ];
 }
 
-function jumpNo(){
+function jumpNo() {
   if (!btnNo || !noZone) return;
 
   const z = noZone.getBoundingClientRect();
   const b = btnNo.getBoundingClientRect();
   const xs = getNoSlots(z.width, b.width);
 
-  // first click: switch to JS-controlled placement (no CSS transform)
-  if (!isNoPlayMode){
+  if (!isNoPlayMode) {
     isNoPlayMode = true;
     btnNo.style.position = "absolute";
-    btnNo.style.transform = "none"; // IMPORTANT so it doesn't "sink" after animation
+    btnNo.style.transform = "none";
   }
 
-  noSlot = (noSlot + 1) % xs.length;
+  // FIX: Slot wechselt immer zu einem anderen (kein Hängenbleiben am selben Platz)
+  const prevSlot = noSlot;
+  do {
+    noSlot = Math.floor(Math.random() * xs.length);
+  } while (noSlot === prevSlot && xs.length > 1);
 
-  // pick a stable Y inside the zone (lower area)
-  const y = Math.max(55, (noZone.clientHeight * 0.68) - (b.height / 2));
+  const y = Math.max(55, noZone.clientHeight * 0.68 - b.height / 2);
 
-  // set BOTH left + top so it stays exactly where it jumps
   btnNo.style.left = xs[noSlot] + "px";
-  btnNo.style.top  = y + "px";
+  btnNo.style.top = y + "px";
 
-  // disagree shake (doesn't change final position)
   btnNo.classList.remove("shake");
-  void btnNo.offsetWidth;
+  void btnNo.offsetWidth; // reflow erzwingen
   btnNo.classList.add("shake");
 }
 
-if (btnNo){
-  btnNo.addEventListener("pointerdown", (e) => {
-    e.preventDefault();
-    jumpNo();
-  });
-  btnNo.addEventListener("click", (e) => {
-    e.preventDefault();
-    jumpNo();
-  });
-}
+btnNo?.addEventListener("pointerdown", (e) => {
+  e.preventDefault();
+  jumpNo();
+});
+
+// FIX: Kein doppeltes Feuern — pointerdown + click würden jumpNo() 2x aufrufen.
+// Click-Listener nur als Fallback für Nicht-Pointer-Geräte.
+btnNo?.addEventListener("click", (e) => {
+  if (e.pointerType !== undefined) return; // bereits via pointerdown behandelt
+  e.preventDefault();
+  jumpNo();
+});
